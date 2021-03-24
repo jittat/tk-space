@@ -5,7 +5,7 @@ from gamelib import Sprite, GameApp, Text
 
 from consts import *
 
-from utils import direction_to_dxdy
+from utils import direction_to_dxdy, distance
 
 class FixedDirectionSprite(Sprite):
     def __init__(self, app, image_filename, x, y, vx, vy):
@@ -24,6 +24,9 @@ class FixedDirectionSprite(Sprite):
 class Bullet(FixedDirectionSprite):
     def __init__(self, app, x, y, vx, vy):
         super().__init__(app, 'images/bullet1.png', x, y, vx, vy)
+
+    def is_hit_enemy(self, enemy):
+        return self.is_within_distance(enemy, BULLET_ENEMY_HIT_RADIUS)
 
 
 class Enemy(FixedDirectionSprite):
@@ -72,8 +75,16 @@ class Ship(Sprite):
     def turn_right(self):
         self.direction += SHIP_TURN_ANGLE
 
+    def is_hit_enemy(self, enemy):
+        return self.is_within_distance(enemy, SHIP_ENEMY_HIT_RADIUS)
+
     def fire(self):
+        if self.app.bullet_count() >= MAX_NUM_BULLETS:
+            return
+
         dx,dy = direction_to_dxdy(self.direction)
+
         bullet = Bullet(self.app, self.x, self.y, dx * BULLET_BASE_SPEED, dy * BULLET_BASE_SPEED)
-        self.app.elements.append(bullet)
+
+        self.app.add_bullet(bullet)
 

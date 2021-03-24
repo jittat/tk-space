@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 from abc import ABC, abstractmethod
+from utils import distance
 
 class GameElement(ABC):
 
@@ -48,6 +49,12 @@ class GameCanvasElement(GameElement):
 
     def delete(self):
         self.canvas.delete(self.canvas_object_id)
+
+    def distance_to(self, element):
+        return distance(self.x, self.y, element.x, element.y)
+
+    def is_within_distance(self, element, d):
+        return self.distance_to(element) <= d
 
     def init_canvas_object(self):
         pass
@@ -103,6 +110,8 @@ class GameApp(ttk.Frame):
         self.elements = []
         self.init_game()
 
+        self.is_stopped = False
+
         self.parent.bind('<KeyPress>', self.on_key_pressed)
         self.parent.bind('<KeyRelease>', self.on_key_released)
         
@@ -112,23 +121,30 @@ class GameApp(ttk.Frame):
             highlightthickness=0)
         self.canvas.grid(sticky="news")
 
+
+    def stop_animation(self):
+        self.is_stopped = True
+
+    def resume_animation(self):
+        self.is_stopped = False
+
     def animate(self):
-        self.pre_update()
+        if not self.is_stopped:
+            self.pre_update()
 
-        for element in self.elements:
-            element.update()
-            element.render()
+            remaining_elements = []
+            for element in self.elements:
+                element.update()
+                element.render()
 
-        self.post_update()
+                if element.to_be_deleted:
+                    element.delete()
+                else:
+                    remaining_elements.append(element)
 
-        remaining_elements = []
-        for element in self.elements:
-            if element.to_be_deleted:
-                element.delete()
-            else:
-                remaining_elements.append(element)
+            self.elements = remaining_elements
 
-        self.elements = remaining_elements
+            self.post_update()
 
         self.after(self.update_delay, self.animate)
 

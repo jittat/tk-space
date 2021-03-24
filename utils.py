@@ -12,6 +12,10 @@ def vector_len(x,y):
     return math.sqrt(x*x + y*y)
 
 
+def distance(x1, y1, x2, y2):
+    return vector_len(x1 - x2, y1 - y2)
+
+
 def normalize_vector(dx, dy):
     l = vector_len(dx, dy)
     if l > 0.01:
