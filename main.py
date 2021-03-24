@@ -62,13 +62,13 @@ class SpaceGame(GameApp):
             self.update_bomb_power_text()
 
     def update_score_text(self):
-        self.score_text.set_text(f'Score: {self.score}')
+        self.score_text.set_text('Score: %d' % self.score)
 
     def update_bomb_power_text(self):
-        self.bomb_power_text.set_text(f'Power: {self.bomb_power}%')
+        self.bomb_power_text.set_text('Power: %d%%' % self.bomb_power)
 
     def update_level_text(self):
-        self.level_text.set_text(f'Level: {self.level}')
+        self.level_text.set_text('Level: %d' % self.level)
 
     def update_score(self):
         self.score_wait += 1
