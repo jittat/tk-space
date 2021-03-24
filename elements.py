@@ -25,7 +25,7 @@ class Bullet(FixedDirectionSprite):
     def __init__(self, app, x, y, vx, vy):
         super().__init__(app, 'images/bullet1.png', x, y, vx, vy)
 
-    def is_hit_enemy(self, enemy):
+    def is_colliding_with_enemy(self, enemy):
         return self.is_within_distance(enemy, BULLET_ENEMY_HIT_RADIUS)
 
 
@@ -75,7 +75,7 @@ class Ship(Sprite):
     def turn_right(self):
         self.direction += SHIP_TURN_ANGLE
 
-    def is_hit_enemy(self, enemy):
+    def is_colliding_with_enemy(self, enemy):
         return self.is_within_distance(enemy, SHIP_ENEMY_HIT_RADIUS)
 
     def fire(self):

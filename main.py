@@ -121,13 +121,13 @@ class SpaceGame(GameApp):
     def process_bullet_enemy_collisions(self):
         for b in self.bullets:
             for e in self.enemies:
-                if b.is_hit_enemy(e):
+                if b.is_colliding_with_enemy(e):
                     b.to_be_deleted = True
                     e.to_be_deleted = True
 
     def process_ship_enemy_collision(self):
         for e in self.enemies:
-            if self.ship.is_hit_enemy(e):
+            if self.ship.is_colliding_with_enemy(e):
                 self.stop_animation()
 
     def process_collisions(self):
