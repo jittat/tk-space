@@ -16,22 +16,18 @@ class SpaceGame(GameApp):
 
         self.score = 0
         self.score_wait = 0
+        self.score_text = Text(self, '', 100, 20)
+        self.update_score_text()
 
         self.bomb_power = BOMB_FULL_POWER
         self.bomb_wait = 0
-
-        self.score_text = Text(self, '', 100, 20)
         self.bomb_power_text = Text(self, '', 700, 20)
-
-        self.update_score_text()
         self.update_bomb_power_text()
 
         self.elements.append(self.ship)
-        self.elements.append(self.score_text)
 
         self.enemies = []
         self.bullets = []
-
 
     def add_enemy(self, enemy):
         self.enemies.append(enemy)
@@ -58,6 +54,8 @@ class SpaceGame(GameApp):
             for e in self.enemies:
                 if self.ship.distance_to(e) <= BOMB_RADIUS:
                     e.to_be_deleted = True
+
+            self.update_bomb_power_text()
 
     def update_score_text(self):
         self.score_text.set_text(f'Score: {self.score}')
@@ -95,7 +93,6 @@ class SpaceGame(GameApp):
             enemies.append(enemy)
 
         return enemies
-
 
     def create_enemy_from_edges(self):
         x, y = random_edge_position()
