@@ -14,6 +14,10 @@ class SpaceGame(GameApp):
     def init_game(self):
         self.ship = Ship(self, CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
 
+        self.level = 1
+        self.level_text = Text(self, '', 100, 580)
+        self.update_level_text()
+
         self.score = 0
         self.score_wait = 0
         self.score_text = Text(self, '', 100, 20)
@@ -63,6 +67,9 @@ class SpaceGame(GameApp):
     def update_bomb_power_text(self):
         self.bomb_power_text.set_text(f'Power: {self.bomb_power}%')
 
+    def update_level_text(self):
+        self.level_text.set_text(f'Level: {self.level}')
+
     def update_score(self):
         self.score_wait += 1
         if self.score_wait >= SCORE_WAIT:
@@ -103,7 +110,6 @@ class SpaceGame(GameApp):
 
         enemy = Enemy(self, x, y, vx, vy)
         return [enemy]
-
 
     def create_enemies(self):
         if random() < 0.2:
